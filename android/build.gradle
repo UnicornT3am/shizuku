@@ -1,0 +1,65 @@
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+    id "dev.rikka.tools.refine" version "4.4.0"
+}
+
+group 'dev.re7gog.shizuku_apk_installer'
+version '1.0-SNAPSHOT'
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+android {
+    if (project.android.hasProperty("namespace")) {
+        namespace 'dev.re7gog.shizuku_apk_installer'
+    }
+
+    compileSdk 34
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    defaultConfig {
+        consumerProguardFiles 'consumer-rules.pro'
+        minSdkVersion 24
+    }
+
+    dependencies {
+        def versionShizuku = "13.1.5"
+        implementation "dev.rikka.shizuku:api:${versionShizuku}"
+        implementation "dev.rikka.shizuku:provider:${versionShizuku}"
+
+        implementation "dev.rikka.tools.refine:runtime:4.4.0"
+        compileOnly    "dev.rikka.hidden:stub:4.3.2"
+        implementation "org.lsposed.hiddenapibypass:hiddenapibypass:4.3"
+    }
+}
